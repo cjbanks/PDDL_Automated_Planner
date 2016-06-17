@@ -3,8 +3,24 @@ clc; close all;
 addpath('Strips','Numeric','Time');
 
 % CHANGE FILES HERE
-plotting_call('Depot_Strips.txt','DriverLog_Strips.txt',...
-        'ZenoTravels_Strips.txt');
+%  plotting_call('Depot_Strips.txt','DriverLog_Strips.txt',...
+%         'ZenoTravels_Strips.txt');
+%     
+% plotting_call('Depot_Numeric.txt','DriverLog_Numeric.txt',...
+%         'ZenoTravel_Numeric.txt');
+
+% plotting_call('Depot_Time.txt','DriverLog_Time.txt',...
+%         'ZenoTravel_Time.txt');
+
+% plotting_call('Depot_Strips.txt','Depot_Numeric.txt',...
+%         'Depot_Time.txt');
+
+% plotting_call('DriverLog_Strips.txt','DriverLog_Numeric.txt',...
+%         'DriverLog_Time.txt');
+
+plotting_call('ZenoTravel_Strips.txt','ZenoTravel_Numeric.txt',...
+        'ZenoTravel_Time.txt');
+
 end
 
 
@@ -14,7 +30,7 @@ function [time, cost, numSubPlans, numGoals] = getData(filename)
 fid = fopen(filename);
 a = textscan(fid, '%s %s %s %s %s');
 a = horzcat(a{:});
-a = a(4:end,:);
+a = a(2:end,:);
 fclose(fid);
 
 % Get metrics
@@ -45,8 +61,8 @@ plot(time_2,'*r-','markersize',8);
 plot(time_3,'^b-','markersize',6);
 xlabel('Problem files','fontsize',14);
 ylabel('Computation Time [sec]','fontsize',14);
-title('Domain Comparison (STRIPS)','fontsize',16);      % CHANGE TITLE HERE
-lhandle = legend('Depots','DriverLog','Zenotravel',...  % CHANGE LEGEND HERE
+title('Complexity Comparison (ZenoTravel)','fontsize',16);      % CHANGE TITLE HERE
+lhandle = legend('Strips','Numeric','Time',...  % CHANGE LEGEND HERE
     'location','northwest');  
 set(lhandle, 'fontsize',12)
 
