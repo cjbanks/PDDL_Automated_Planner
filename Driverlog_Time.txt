@@ -1,0 +1,21 @@
+Pfile	Actions	Goals	PlanTime	Cost
+pfile1	7	4	0.02	303
+pfile2	23	7	0.01	579
+pfile3	15	6	0.01	287
+pfile4	25	9	0.01	417
+pfile5	21	8	0.41	103
+pfile6	21	10	0.01	357
+pfile7	25	10	0.01	640
+pfile8	30	11	0.01	659
+pfile9	22	10	0.41	382
+pfile10	20	8	0.45	108
+pfile11	23	7	0.02	580
+pfile12	42	10	1.95	520
+pfile13	36	8	1.19	687
+pfile14	35	9	1.3	756
+pfile15	50	10	0.78	518
+pfile16				
+pfile17	97	23	57.83	900
+pfile18	117	23	284.14	1190
+pfile19	301	34	423.92	3368
+pfile20	155	33	63.69	1020
