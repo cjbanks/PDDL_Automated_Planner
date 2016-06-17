@@ -3,8 +3,8 @@ pfile1	12	2	0.01	42.6
 pfile2	16	4	0.01	43.9
 pfile3	28	6	1.58	16
 pfile4	34	6	0.41	51.1
-				
-				
+pfile5	NaN	NaN	NaN	NaN
+pfile6	NaN	NaN	NaN	NaN
 pfile7	21	5	0.41	36.3
 pfile8	39	7	0.4	25
 pfile9	73	13	353.88	114.4
