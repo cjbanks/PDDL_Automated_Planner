@@ -21,6 +21,7 @@ void RunPlanner(string pfileinput, char pfilechar[], char inputchar[]);
 void ReadPlannerFile(string& word, string& plancost, string& actions, string& time1, string dataname);
 int ReadProblemFile(string& word, string goals, int& count,char pfilechar[], string pfileinput, StrIntMap& goal);
 void PrintResults(string plancost, string actions, string time1, int count, string dataname);
+void GetTime(string& time1);
 //void runsystem(char inputchar[]) { system(inputchar); }
 
 int main()
@@ -31,11 +32,11 @@ int main()
 	string word;
 	string goals = "(and";
 	string pfileinput = " ";
-	char pfilechar[1024] = "C:\\Users\\chris\\Downloads\\IPC3\\Tests1\\DriverLog\\Strips\\";
+	char pfilechar[1024] = "C:\\Users\\chris\\Downloads\\IPC3\\Tests1\\ZenoTravel\\Time\\";
 	char *inputchar = " ";
 	_finddata_t data;
 	int next = 0;
-	int file = _findfirst("C:\\Users\\chris\\Downloads\\IPC3\\Tests1\\DriverLog\\Strips\\pfi*", &data);
+	int file = _findfirst("C:\\Users\\chris\\Downloads\\IPC3\\Tests1\\ZenoTravel\\Time\\pfi*", &data);
 	string temp;
 	regex e("pfile");
 	StrIntMap goal, acti;
@@ -70,8 +71,12 @@ int main()
 				//boost::thread timedplan(boost::bind(runsystem, inputchar));
 				RunPlanner(pfileinput, pfilechar, inputchar);
 		     	ReadPlannerFile(word, plancost, actions, time1, dataname);
+				GetTime(time1);
 				count = ReadProblemFile(word, goals, count, pfilechar, pfileinput, goal);
 				PrintResults(plancost, actions, time1, count, dataname);
+				//For Time
+				cout << "Finished with " << data.name << "....." << endl;
+				//For Time
 				count = 0;
 				goal.clear();
 			}
@@ -86,6 +91,7 @@ int main()
 		cout << "FILE DOES NOT EXIST" << endl;
 	}
 
+	cout << "Done." << endl;
 	spreadsheet.close();
 	cin.get();
 	return 0;
@@ -96,12 +102,12 @@ int main()
 void RunPlanner(string pfileinput, char pfilechar[], char inputchar[])
 {
 	//Run for Strips and Numeric
-	string input = "C:\\Users\\chris\\lpg-td-1.0.exe -o C:\\Users\\chris\\Downloads\\IPC3\\Tests1\\DriverLog\\Strips\\driverlog.pddl -f ";
-	input = input + pfileinput + " -quality";
+	//string input = "C:\\Users\\chris\\lpg-td-1.0.exe -o C:\\Users\\chris\\Downloads\\IPC3\\Tests1\\ZenoTravel\\Numeric\\zenonumeric.pddl -f ";
+	//input = input + pfileinput + " -quality";
 
 	//Run for Time
-	//string input = "C:\\Users\\chris\\lpg-td-1.0.exe -o C:\\Users\\chris\\Downloads\\IPC3\\Tests1\\Depots\\Time\\DepotsTime.pddl -f ";
-	//input = input + pfileinput + " -quality -noout > text.SOL";
+	string input = "C:\\Users\\chris\\lpg-td-1.0.exe -o C:\\Users\\chris\\Downloads\\IPC3\\Tests1\\ZenoTravel\\Time\\zenotravelTandN.pddl -f ";
+	input = input + pfileinput + " -quality -noout > text.SOL";
 
 	inputchar = (char*)malloc(input.size() + 1);
 	memcpy(inputchar, input.c_str(), input.size() + 1);
@@ -113,14 +119,15 @@ void RunPlanner(string pfileinput, char pfilechar[], char inputchar[])
 void ReadPlannerFile(string& word, string& plancost, string& actions, string& time1, string dataname)
 {
 	//run for Strips and Numeric
-	string PlanFile = "plan_";
-	PlanFile = PlanFile + dataname + "_1.SOL";
+	//string PlanFile = "plan_";
+	//PlanFile = PlanFile + dataname + "_1.SOL";
 	
 	//Run for Time
-	//string PlanFile = "text.SOL";
+	string PlanFile = "text.SOL";
 
 	ifstream planningfile(PlanFile);
 	int num = 0;
+	/*
 	while (!planningfile.eof())
 	{
 		planningfile >> word;
@@ -138,7 +145,7 @@ void ReadPlannerFile(string& word, string& plancost, string& actions, string& ti
 		 if (regex_search(word, action))
 			 num++;
 		
-	}
+	}*/
 
 	string result;
 	ostringstream convert;
@@ -149,12 +156,11 @@ void ReadPlannerFile(string& word, string& plancost, string& actions, string& ti
 	
 
 	//For Time
-	/*
+
 	while (!planningfile.eof())
 	{
 		planningfile >> word;
 		regex cost("quality:");
-		regex timing("Preprocessing total time:");
 		regex action("Actions:");
 
 		if (regex_search(word, cost))
@@ -163,16 +169,32 @@ void ReadPlannerFile(string& word, string& plancost, string& actions, string& ti
 		if (regex_search(word, action))
 			planningfile >> actions;
 
-		if (regex_search(word, timing))
-				planningfile >> time1;
-
-
-
-	}*/
+	}
 
 	//cout << num;
 	//plancost = actions;
 	planningfile.close();
+}
+
+void GetTime(string& time1)
+{
+	string PlanFile = "text.SOL";
+
+	ifstream planningfile(PlanFile);
+
+	while (!planningfile.eof())
+	{
+		regex timing("Total time:");
+		string line;
+
+		getline(planningfile, line);
+		if (regex_search(line, timing))
+		{
+			cout << line;
+			time1 = line;
+		}
+	}
+
 }
 
 
@@ -200,27 +222,14 @@ int ReadProblemFile(string& line, string goals, int& count, char pfilechar[],str
 					++it;
 				}
 			}
-
 		}
-
-
-		/*regex paren("and");
-
-		if (regex_search(word, paren))
-		{
-			while (problemfile >> word)
-				++goal[word];
-			for (map<string, int>::iterator g = goal.begin(); g != goal.end(); g++)
-			{
-				if (g->first == "(on")
-				{
-					count = g->second;
-			    }
-			}
-		}*/
 	}
-	cout << count;
+	
 	problemfile.close();
+
+	//For Numeric and Time ONLY
+	count--;
+	//FOR NUMERIC and Time ONLY
 	return count;
 
 }
